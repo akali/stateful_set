@@ -1,0 +1,10 @@
+replicaCount: 3
+
+image:
+  repository: zhanlederzach/sa-homework-api-ss
+  pullPolicy: Always
+
+database:
+  name: postgres
+  username: postgres
+  password: postgres

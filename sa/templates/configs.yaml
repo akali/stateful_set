@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: sa-config
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: sa-secret
+type: Opaque
+data:
+  POSTGRES_DATABASE: {{ .Values.database.name | b64enc }}
+  POSTGRES_USERNAME: {{ .Values.database.username | b64enc }}
+  POSTGRES_PASSWORD: {{ .Values.database.password | b64enc }}

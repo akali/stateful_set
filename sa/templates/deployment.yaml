@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sa-homework-api
+  labels:
+    app: sa-homework-api
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      name: sa-homework-api
+  template:
+    metadata:
+      labels:
+        name: sa-homework-api
+    spec:
+      containers:
+        - name: api
+          image: {{ .Values.image.repository }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 60
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 60
+            periodSeconds: 10
+          env:
+            - name: POSTGRES_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: sa-secret
+                  key: POSTGRES_DATABASE
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: sa-secret
+                  key: POSTGRES_PASSWORD
+            - name: POSTGRES_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: sa-secret
+                  key: POSTGRES_USERNAME
